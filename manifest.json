@@ -1,0 +1,13 @@
+{
+  "name": "goose",
+  "version": "0.1.0",
+  "description": "Goose Web Client",
+  "fullscreen": true,
+  "content-security-policy": "frame-src 'self' http://localhost:3000",
+  "menu": {
+    "goose": {
+      "label": "Goose MCP",
+      "path": "goose.html"
+    }
+  }
+}
