@@ -22,10 +22,10 @@ function show_error(title, error) {
     error_doc.close();
 }
 
-function spawn_process() {
-    console.log('Spawning goose web process');
+function spawn_process(disable_keyring = false) {
+    console.log('Spawning goose web process', disable_keyring ? 'with keyring disabled' : '');
 
-    const ready_message = `http://${GOOSE_IP}:${GOOSE_PORT}`; // Be very specific
+    const ready_message = `http://${GOOSE_IP}:${GOOSE_PORT}`;
     let process_output = "";
     let ready = false;
 
@@ -33,9 +33,14 @@ function spawn_process() {
         if (!ready) {
             show_error("Timeout waiting for goose web process to be ready", { output: process_output });
         }
-    }, 30000); // 30 second timeout
+    }, 30000);
 
-    cockpit.spawn(['goose', 'web'], { err: "out" })
+    const spawn_options = { err: "out" };
+    if (disable_keyring) {
+        spawn_options.environ = ["GOOSE_DISABLE_KEYRING=true"];
+    }
+
+    cockpit.spawn(['goose', 'web'], spawn_options)
         .stream(output => {
             console.log("goose web:", output);
             process_output += output;
@@ -49,7 +54,12 @@ function spawn_process() {
         .catch(error => {
             if (!ready) {
                 clearTimeout(timeout);
-                show_error('Failed to spawn goose web process', error);
+                if (!disable_keyring && process_output.includes("Failed to access keyring")) {
+                    console.log("Keyring access failed, retrying with GOOSE_DISABLE_KEYRING=true");
+                    spawn_process(true);
+                } else {
+                    show_error('Failed to spawn goose web process', error);
+                }
             }
         });
 }
