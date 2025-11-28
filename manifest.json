@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "Goose Web Client",
   "fullscreen": true,
-  "content-security-policy": "frame-src 'self' http://localhost:3000",
+  "content-security-policy": "script-src 'self'; frame-src 'self' http://localhost:3000 http://127.0.0.1:3000",
   "menu": {
     "goose": {
       "label": "Goose MCP",

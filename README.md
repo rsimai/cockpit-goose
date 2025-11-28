@@ -8,4 +8,3 @@ This allows you to interact with the Goose application from within Cockpit.
 
 1. clone the repo
 2. link it for Cockpit (regular user) `ln -s ~git/cockpit-goose/ ~/.local/share/cockpit`
-3. make sure to start `goose web`
