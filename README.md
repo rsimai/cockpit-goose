@@ -2,6 +2,8 @@
 
 A Cockpit plugin to display the Goose web client.
 
+![cockpit-goose](./cockpit-goose.png)
+
 This plugin adds a "Goose" menu item to the Cockpit interface, which embeds the Goose web application, typically running on `http://localhost:3000`. If it's not up, Cockpit will spawn it.
 
 This allows you to interact with the Goose application from within Cockpit.
